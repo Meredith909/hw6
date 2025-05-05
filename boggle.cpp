@@ -100,33 +100,28 @@ bool boggleHelper(const std::set<std::string>& dict,
                   int dr, int dc)
 {
     unsigned int n = board.size();
-    // 1) Out of bounds?
     if (r >= n || c >= n) return false;
 
-    // 2) Extend current word
     word.push_back(board[r][c]);
 
-    // 3) No longer a valid prefix?
+
     if (prefix.count(word) == 0) {
-        //   — If it’s nonetheless a full word, add and report success
         if (dict.count(word)) {
             result.insert(word);
             return true;
         }
-        //   — Otherwise dead end
         return false;
     }
 
-    // 4) Still a prefix: try one more step in (dr,dc)
+
     bool foundLonger = boggleHelper(dict, prefix, board, word, result,
                                     r + dr, c + dc, dr, dc);
 
-    // 5) If deeper search failed to yield a longer word, but this is a word:
+
     if (!foundLonger && dict.count(word)) {
         result.insert(word);
         return true;
     }
 
-    // 6) Otherwise bubble up whether we found anything
     return foundLonger;
 }
